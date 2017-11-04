@@ -25,45 +25,48 @@ public class cmdSettings implements Command{
 
     @Override
     public void action(String invoke, String[] args, MessageReceivedEvent event) throws ParseException, IOException {
-        Message message = event.getTextChannel().sendMessage(new EmbedBuilder()
-                .setColor(Color.blue)
-                .setTitle(":gear: - EINSTELLUNGEN")
-                .addField("MusicChannel", "none", true)
-                .addField("ForcedMusicChannel", "none", true)
-                .addField("BotChannel", "none", true)
-                .addField("DJRolle", "none", true)
-                .addField("Prefix", "none", true)
-                .setFooter("Seite " + Page + "/" + maxPage, event.getJDA().getSelfUser().getAvatarUrl())
-                .build()
-        ).complete();
-        message.addReaction("⬅").queue();
-        message.addReaction("➡").queue();
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Timeout++;
-                    if(message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(0).getCount() != button1) {
-                        button1 = message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(0).getCount();
-                        Timeout = 0;
-                        Page = getPageContent(message, Page -1, maxPage);
+        if(args.length < 1) {
+            Message message = event.getTextChannel().sendMessage(new EmbedBuilder()
+                    .setColor(Color.blue)
+                    .setTitle(":gear: - EINSTELLUNGEN")
+                    .addField("MusicChannel", "none", true)
+                    .addField("ForcedMusicChannel", "none", true)
+                    .addField("BotChannel", "none", true)
+                    .addField("DJRolle", "none", true)
+                    .addField("Prefix", "none", true)
+                    .addField("Volume", "none", true)
+                    .setFooter("Seite " + Page + "/" + maxPage, event.getJDA().getSelfUser().getAvatarUrl())
+                    .build()
+            ).complete();
+            message.addReaction("⬅").queue();
+            message.addReaction("➡").queue();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        Timeout++;
+                        if(message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(0).getCount() != button1) {
+                            button1 = message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(0).getCount();
+                            Timeout = 0;
+                            Page = getPageContent(message, Page -1, maxPage);
+                        }
+                        if(message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(1).getCount() != button2) {
+                            button2 = message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(1).getCount();
+                            Timeout = 0;
+                            Page = getPageContent(message, Page +1, maxPage);
+                        }
+                        if(Timeout == 60) {
+                            event.getMessage().delete().queue();
+                            message.delete().queue();
+                            this.cancel();
+                        }
+                    } catch (Exception exception) {
+                        //Noch nichts
                     }
-                    if(message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(1).getCount() != button2) {
-                        button2 = message.getTextChannel().getMessageById(message.getId()).complete().getReactions().get(1).getCount();
-                        Timeout = 0;
-                        Page = getPageContent(message, Page +1, maxPage);
-                    }
-                    if(Timeout == 60) {
-                        event.getMessage().delete().queue();
-                        message.delete().queue();
-                        this.cancel();
-                    }
-                } catch (Exception exception) {
-                    //Noch nichts
-                }
 
-            }
-        }, 0 ,500);
+                }
+            }, 0 ,500);
+        }
     }
 
     @Override
@@ -99,7 +102,7 @@ public class cmdSettings implements Command{
                         .setColor(Color.blue)
                         .setTitle(":gear: - MUSICCHANNEL")
                         .addField("Beschreibung", "Der MusicChannel ist der TextChannel in dem der Bot alle Musik relevanten Nachrichten postet.", false)
-                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "cfg mc < Der neue MusicChannel als #Mention >", false)
+                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "set mc < Der neue MusicChannel als #Mention >", false)
                         .setFooter("Seite " + page + "/" + maxpage, message.getJDA().getSelfUser().getAvatarUrl())
                         .build()
                 ).queue();
@@ -110,7 +113,7 @@ public class cmdSettings implements Command{
                         .setColor(Color.blue)
                         .setTitle(":gear: - FORCEDMUSICCHANNEL")
                         .addField("Beschreibung", "Wenn aktiviert werden nur MusikCommands im festgelegten MusicChannel akzeptiert.", false)
-                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "cfg forcedmc < true / false >", false)
+                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "set forcedmc < true / false >", false)
                         .setFooter("Seite " + page + "/" + maxpage, message.getJDA().getSelfUser().getAvatarUrl())
                         .build()
                 ).queue();
@@ -121,7 +124,7 @@ public class cmdSettings implements Command{
                         .setColor(Color.blue)
                         .setTitle(":gear: - BOTCHANNEL")
                         .addField("Beschreibung", "Legt den TextChannel fest in den der Bot alle nicht Music relevanten Machrichten postet.", false)
-                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "cfg bc < Der neue BotChannel als #Mention >", false)
+                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "set bc < Der neue BotChannel als #Mention >", false)
                         .setFooter("Seite " + page + "/" + maxpage, message.getJDA().getSelfUser().getAvatarUrl())
                         .build()
                 ).queue();
@@ -132,7 +135,7 @@ public class cmdSettings implements Command{
                         .setColor(Color.blue)
                         .setTitle(":gear: - DJROLLE")
                         .addField("Beschreibung", "MusicCommands wie " + Tools.prefix(message.getGuild()) + "skip oder " + Tools.prefix(message.getGuild()) + "stop werden für alle User ohne die Festgelegte Rolle gesperrt.", false)
-                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "cfg djr < Die DJRolle als @Mention / none >", false)
+                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "set djr < Die DJRolle als @Mention / none >", false)
                         .setFooter("Seite " + page + "/" + maxpage, message.getJDA().getSelfUser().getAvatarUrl())
                         .build()
                 ).queue();
@@ -143,7 +146,7 @@ public class cmdSettings implements Command{
                         .setColor(Color.blue)
                         .setTitle(":gear: - PREFIX")
                         .addField("Beschreibung", "Legt den Invoke, das Prefix, das/die erste/ersten Zeichen Fest die noch vor dem Command geschrieben werden.", false)
-                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "cfg prefix < Das neue Prefix >", false)
+                        .addField("Eingabe", Tools.prefix(message.getGuild()) + "set prefix < Das neue Prefix >", false)
                         .setFooter("Seite " + page + "/" + maxpage, message.getJDA().getSelfUser().getAvatarUrl())
                         .build()
                 ).queue();

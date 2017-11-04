@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import sun.audio.AudioPlayer;
-import util.SETTINGS;
+import util.BOTSETTINGS;
 import util.Shelf;
 import util.TOPSECRET;
 
@@ -27,16 +27,16 @@ public class Tools {
         int Selection;
 
         //Code
-        if(SETTINGS.BOTSELECTION == 0) {
+        if(BOTSETTINGS.BOTSELECTION == 0) {
             System.out.print("Welchen Bot willst du ausführen?");
         }
         for(boolean loop1 = true; loop1;) {
 
-            if(SETTINGS.BOTSELECTION == 0) {
+            if(BOTSETTINGS.BOTSELECTION == 0) {
                 System.out.print("\n1: offGNB\n2: devGNB\n3: GLaDOS\n");
                 Selection = Scanner.nextInt();
             } else {
-                Selection = SETTINGS.BOTSELECTION;
+                Selection = BOTSETTINGS.BOTSELECTION;
             }
             switch (Selection) {
 
@@ -118,11 +118,11 @@ public class Tools {
         try {
             String prefix = util.Shelf.read("Prefix" + guild.getId());
             if(prefix.equals("none")) {
-                prefix = SETTINGS.DEFAULTPREFIX;
+                prefix = BOTSETTINGS.DEFAULTPREFIX;
             }
             return prefix;
         } catch (NullPointerException exception) {
-            return SETTINGS.DEFAULTPREFIX;
+            return BOTSETTINGS.DEFAULTPREFIX;
         }
     }
 
@@ -191,7 +191,7 @@ public class Tools {
 
 
             case "ADM":
-                permissionlvl = "ADMIN - :blue_circle:";
+                permissionlvl = ":blue_circle:";
                 if(event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
                     hasPermissions = true;
                     Tools.Stamp("info", event.getJDA().getSelfUser().getName(), "\"" + event.getMember().getEffectiveName() + "\" in \"" + event.getGuild().getName() + "\" hat " + event.getMessage().getContent() + " benutzt.");
@@ -206,12 +206,12 @@ public class Tools {
 
 
             case "BOT":
-                permissionlvl = "BOTOPERATOR - :red_circle:";
-                if(Arrays.asList(SETTINGS.BOTOPERATORIDS).contains(event.getMember().getUser().getId())) {
+                permissionlvl = ":red_circle:";
+                if(Arrays.asList(BOTSETTINGS.BOTOPERATORIDS).contains(event.getMember().getUser().getId())) {
                     hasPermissions = true;
                 } else {
                     for(Member memberil : event.getMember().getGuild().getMembers()) {
-                        if(Arrays.asList(SETTINGS.BOTOPERATORIDS).contains(memberil.getUser().getId())) {
+                        if(Arrays.asList(BOTSETTINGS.BOTOPERATORIDS).contains(memberil.getUser().getId())) {
                             mentions += memberil.getAsMention() + " ";
                         }
                     }

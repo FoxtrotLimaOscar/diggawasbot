@@ -39,6 +39,14 @@ public class eeListener extends ListenerAdapter {
                 event.getTextChannel().sendMessage("Hab auch schon was von ihm gehört.\nMan sagt er tötet Eulen...").queue();
             }
 
+            if(content.contains("m&m") || content.contains("mnm")) {
+                event.getTextChannel().sendMessage("Wenn M&M hier sind kann " + event.getJDA().getUserById("265921736225193985").getAsMention() + " auch nciht weit sein!").queue();
+            }
+
+            if(content.contains("maven")) {
+                event.getTextChannel().sendMessage("Jonas wollte dass hier was steht, ok... das tut es.").queue();
+            }
+
 
 
         }

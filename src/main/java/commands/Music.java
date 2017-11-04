@@ -17,7 +17,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.SETTINGS;
+import util.BOTSETTINGS;
 import util.Shelf;
 
 import java.awt.*;
@@ -141,7 +141,7 @@ public class Music implements Command{
                     }
                     trackLoaded(playlist.getTracks().get(0));
                 } else {
-                    for (int i = 0; i < Math.min(playlist.getTracks().size(), SETTINGS.YTPLAYLISTLIMIT); i++) {
+                    for (int i = 0; i < Math.min(playlist.getTracks().size(), BOTSETTINGS.YTPLAYLISTLIMIT); i++) {
                         getManager(guild).queue(playlist.getTracks().get(i), event.getMember());
                     }
                     if(playlist.getTracks().size() == 1) {

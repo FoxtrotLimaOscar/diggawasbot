@@ -4,7 +4,7 @@ import core.Tools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.SETTINGS;
+import util.BOTSETTINGS;
 
 import java.awt.*;
 
@@ -46,7 +46,7 @@ public class cmdInfo implements Command{
                         event.getJDA().getUserById("289423581077831681").getAsMention() + " entwickelt!")
                 .addField("Coder", event.getJDA().getUserById("289423581077831681").getAsMention(), true)
                 .addField("Hoster", event.getJDA().getUserById("265955256439930882").getAsMention(), true)
-                .addField("Version", SETTINGS.VERSION + ": " + SETTINGS.VERSIONNAME, true)
+                .addField("Version", BOTSETTINGS.VERSION + ": " + BOTSETTINGS.VERSIONNAME, true)
                 .addField("Prefix", Tools.prefix(event.getGuild()), true)
                 .addField("MusicChannel", MusicChannel, true)
                 .addField("DefaulChannel", Tools.getDefaulChannel(event.getGuild()).getAsMention(), true)
